@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kanban Home Page</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='kanban.css')}}" />
+</head>
+
+<body>
+  <div class="navigation">
+		<div class="container flex">
+			<h1 class='logo'>Kanban</h1>
+			<nav>
+				<ul>
+					<li><a href='/dashboard'>Your Board</a></li>
+					<li><a href='/add_task'>Create New Task</a></li>
+					<li><a href='/logout'>Logout</a></li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+    <div class = 'container-line'>
+      {% with messages = get_flashed_messages(with_categories=true) %} {% if
+          messages %}
+          <ul class="flashes">
+            {% for category, message in messages %}
+            <li class="{{ category }}">{{ message }}</li>
+            {% endfor %}
+          </ul>
+          {% endif %} {% endwith %}<br />
+        <h2>Welcome {{username}} !</h2>
+        <a href='/add_task'><input type='submit' value='Create new task' class='btn btn-primary'></a>
+        <br />
+        <br />
+    </div>
+  <div class="todos">
+    <div class="container">
+      
+      <div>
+        <h2 class = Board-status-name>Todo</h2>
+        <hr />
+        <div class="all-todos">
+          {% for task in todo %}
+          <div class="todo card">
+            <div class="todo-info">
+              <p>{{task.task_name}}</p>
+            </div>
+            <div>
+              <a class='btn-secondary' href="{{ url_for('doing', task_id=task.task_id)}}"><u>Doing</u></a>
+              <a class='btn-secondary' href="{{ url_for('done', task_id=task.task_id)}}"><u>Done</u></a>
+              <a class='btn-secondary' href="{{ url_for('delete', task_id=task.task_id)}}"><u>Delete</u></a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div>
+        <h2 class = Board-status-name>Doing</h2>
+        <hr />
+        <div class="all-todos">
+          {% for task in doing %}
+          <div class="todo card">
+            <div class="todo-info">
+              <p>{{task.task_name}}</p>
+            </div>
+            <div>
+              <a class='btn-secondary' href="{{ url_for('done', task_id=task.task_id)}}"><u>Done</u></a>
+              <a class='btn-secondary' href="{{ url_for('delete', task_id=task.task_id)}}"><u>Delete</u></a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div>
+        <h2 class = Board-status-name>Done</h2>
+        <hr />
+        <div class="all-todos">
+          {% for task in done %}
+          <div class="todo card">
+            <div class="todo-info">
+              <p>{{task.task_name}}</p>
+            </div>
+            <div>
+              <a class='btn-secondary' href="{{ url_for('delete', task_id=task.task_id)}}"><u>Delete</u></a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
